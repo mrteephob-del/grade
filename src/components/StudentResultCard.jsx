@@ -105,40 +105,40 @@ export default function StudentResultCard({ student, onResetSearch }) {
 
   const scoreItems = [
     {
-      title: 'คะแนนเก็บสะสม (50%)',
-      score: student.classwork !== undefined ? student.classwork : (student.assignment || 0),
-      max: student.maxClasswork || 50,
+      title: 'คะแนนเก็บสะสม (Coursework & Assignments)',
+      score: student.collectedScore !== undefined ? student.collectedScore : student.assignment,
+      max: student.maxCollected || 50,
       icon: ClipboardCheck,
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'bg-blue-600',
-      badge: 'งานมอบหมาย & กิจกรรมสะสม'
+      badge: 'คะแนนเก็บ 50%'
     },
     {
-      title: 'คะแนนสอบกลางภาค (20%)',
-      score: student.midterm !== undefined ? student.midterm : 0,
+      title: 'คะแนนสอบกลางภาค (Midterm Exam)',
+      score: student.midterm,
       max: student.maxMidterm || 20,
       icon: BookOpen,
       color: 'from-amber-500 to-orange-500',
       bgColor: 'bg-amber-500',
-      badge: 'การสอบกลางภาค'
+      badge: 'คะแนนสอบกลางภาค 20%'
     },
     {
-      title: 'คะแนนสอบปลายภาค (25%)',
-      score: student.final !== undefined ? student.final : 0,
+      title: 'คะแนนสอบปลายภาค (Final Exam)',
+      score: student.final,
       max: student.maxFinal || 25,
       icon: TrendingUp,
       color: 'from-orange-500 to-rose-500',
       bgColor: 'bg-orange-600',
-      badge: 'การสอบปลายภาค'
+      badge: 'คะแนนสอบปลายภาค 25%'
     },
     {
-      title: 'คะแนนแบบฟอร์ม (5%)',
-      score: student.form !== undefined ? student.form : (student.attendance || 0),
+      title: 'คะแนนแบบฟอร์ม & การมีส่วนร่วม (Form & Activity)',
+      score: student.formScore !== undefined ? student.formScore : (student.quiz || 5),
       max: student.maxForm || 5,
       icon: Sparkles,
       color: 'from-emerald-500 to-teal-600',
       bgColor: 'bg-emerald-600',
-      badge: 'การส่งแบบประเมิน/แบบฟอร์ม'
+      badge: 'คะแนนแบบฟอร์ม 5%'
     }
   ];
 

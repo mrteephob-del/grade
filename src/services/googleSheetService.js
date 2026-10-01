@@ -2,10 +2,10 @@ import Papa from 'papaparse';
 import { MOCK_STUDENTS } from '../data/mockStudents';
 
 export const DEFAULT_SHEET_CONFIG = {
-  sheetId: '1iSChRpjoU_yKoHB7AV8qTceOB7wDLPviwsfBlhJVPnw',
+  sheetId: '1lEOCo7p4ceqTzDKK13NoH3Bj4kolpjlZGqTRWXzTrIY',
   gid: '231322230',
   appsScriptUrl: '',
-  useMockFallback: true,
+  useMockFallback: false,
 };
 
 // Calculate letter grade based on total score
@@ -46,7 +46,7 @@ function normalizeHeader(header) {
 export function transformRowsToStudents(rows) {
   if (!rows || rows.length === 0) return [];
 
-  // Find the header row (sometimes sheet has title rows at the top)
+  // Find the header row (look for 'รหัส', 'student', 'id', or 'ชื่อ')
   let headerIndex = 0;
   for (let i = 0; i < Math.min(5, rows.length); i++) {
     const rowStr = JSON.stringify(rows[i]).toLowerCase();
@@ -58,7 +58,6 @@ export function transformRowsToStudents(rows) {
 
   const rawHeaders = rows[headerIndex];
   if (!Array.isArray(rawHeaders)) {
-    // Already an object array (e.g. from Apps Script or Papa with header: true)
     return rows.map(processStudentObject).filter(s => s && s.id);
   }
 
@@ -68,21 +67,25 @@ export function transformRowsToStudents(rows) {
   // Map header indices
   let idIdx = headers.findIndex(h => /รหัส|student.*id|^id$|code/i.test(h));
   let nameIdx = headers.findIndex(h => /ชื่อ|name|fullname|นิสิต/i.test(h));
+  let noIdx = headers.findIndex(h => /เลขที่|ลำดับ|no|order/i.test(h));
   let secIdx = headers.findIndex(h => /sec|ตอน|กลุ่ม|group/i.test(h));
-  let totalIdx = headers.findIndex(h => /รวม|total|sum|คะแนนรวม|100/i.test(h));
+  let totalIdx = headers.findIndex(h => /รวม|total|sum|คะแนนรวม|100%/i.test(h));
   let gradeIdx = headers.findIndex(h => /เกรด|grade/i.test(h));
   let remarkIdx = headers.findIndex(h => /หมายเหตุ|remark|note|สถานะ|status/i.test(h));
 
-  // Sub-scores according to course syllabus (50% เก็บ / 20% กลางภาค / 25% ปลายภาค / 5% แบบฟอร์ม)
-  let classworkIdx = headers.findIndex(h => /คะแนนเก็บ|เก็บ|classwork|assign|งาน/i.test(h));
-  let midtermIdx = headers.findIndex(h => /กลางภาค|mid/i.test(h));
-  let finalIdx = headers.findIndex(h => /ปลายภาค|fin/i.test(h));
-  let formIdx = headers.findIndex(h => /แบบฟอร์ม|ฟอร์ม|form|attend|เช็คชื่อ/i.test(h));
+  // Sub-scores:
+  // 1. คะแนนเก็บ 50%
+  let collectedIdx = headers.findIndex(h => /เก็บ|50%|assign|งาน/i.test(h));
+  // 2. คะแนนสอบกลางภาค 20%
+  let midtermIdx = headers.findIndex(h => /mid|กลางภาค|20%/i.test(h));
+  // 3. คะแนนสอบปลายภาค 25%
+  let finalIdx = headers.findIndex(h => /fin|ปลายภาค|25%/i.test(h));
+  // 4. คะแนนแบบฟอร์ม 5%
+  let formIdx = headers.findIndex(h => /ฟอร์ม|form|5%/i.test(h));
 
   const students = [];
 
-  for (let i = 0; i < dataRows.length; i++) {
-    const row = dataRows[i];
+  for (const row of dataRows) {
     if (!row || row.length === 0) continue;
 
     // Check if row has an ID
@@ -93,19 +96,20 @@ export function transformRowsToStudents(rows) {
       if (match) rawId = String(match).trim();
     }
 
-    if (!rawId || rawId === 'undefined' || rawId.toLowerCase() === 'id') continue;
+    if (!rawId || rawId === 'undefined' || rawId.toLowerCase() === 'id' || !/^\d+$/.test(rawId)) continue;
 
+    const no = noIdx !== -1 ? String(row[noIdx] || '').trim() : '';
     const name = nameIdx !== -1 ? String(row[nameIdx] || '').trim() : 'นิสิต';
-    const sec = secIdx !== -1 ? String(row[secIdx] || '').trim() : 'Sec 1';
+    const sec = secIdx !== -1 ? String(row[secIdx] || '').trim() : (no ? `เลขที่ ${no}` : 'Sec 1');
 
-    const classwork = classworkIdx !== -1 ? parseFloat(row[classworkIdx]) || 0 : 0;
+    const collectedScore = collectedIdx !== -1 ? parseFloat(row[collectedIdx]) || 0 : 0;
     const midterm = midtermIdx !== -1 ? parseFloat(row[midtermIdx]) || 0 : 0;
     const final = finalIdx !== -1 ? parseFloat(row[finalIdx]) || 0 : 0;
-    const form = formIdx !== -1 ? parseFloat(row[formIdx]) || 0 : 0;
+    const formScore = formIdx !== -1 ? parseFloat(row[formIdx]) || 0 : 0;
 
     let total = totalIdx !== -1 ? parseFloat(row[totalIdx]) : NaN;
     if (isNaN(total)) {
-      total = Math.round((classwork + midterm + final + form) * 100) / 100;
+      total = Math.round((collectedScore + midterm + final + formScore) * 100) / 100;
     }
 
     let grade = gradeIdx !== -1 ? String(row[gradeIdx] || '').trim() : '';
@@ -113,27 +117,34 @@ export function transformRowsToStudents(rows) {
       grade = calculateGrade(total);
     }
 
-    const remarks = remarkIdx !== -1 ? String(row[remarkIdx] || '').trim() : '';
+    const remarks = remarkIdx !== -1 ? String(row[remarkIdx] || '').trim() : 'ส่งงานและสอบครบถ้วน';
 
     students.push({
-      no: i + 1,
       id: rawId,
+      no: no,
       name: name,
       sec: sec,
-      faculty: "มหาวิทยาลัยนเรศวร",
+      faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
       major: "การตลาดดิจิทัล (Digital Marketing)",
-      classwork: classwork,
-      maxClasswork: 50,
+      collectedScore: collectedScore,
+      maxCollected: 50,
       midterm: midterm,
       maxMidterm: 20,
       final: final,
       maxFinal: 25,
-      form: form,
+      formScore: formScore,
       maxForm: 5,
       total: total,
       grade: grade,
       remarks: remarks || "สถานะการประเมินปกติ",
-      status: getGradeStatus(grade)
+      status: getGradeStatus(grade),
+      // Backwards-compatible aliases
+      assignment: collectedScore,
+      maxAssignment: 50,
+      quiz: formScore,
+      maxQuiz: 5,
+      attendance: 5,
+      maxAttendance: 5,
     });
   }
 
@@ -145,37 +156,41 @@ function processStudentObject(obj) {
   const keys = Object.keys(obj);
   const idKey = keys.find(k => /รหัส|student.*id|^id$|code/i.test(k));
   const nameKey = keys.find(k => /ชื่อ|name|fullname/i.test(k));
-  const secKey = keys.find(k => /sec|ตอน|กลุ่ม/i.test(k));
   const totalKey = keys.find(k => /รวม|total|sum/i.test(k));
   const gradeKey = keys.find(k => /เกรด|grade/i.test(k));
   const remarkKey = keys.find(k => /หมายเหตุ|remark|note/i.test(k));
 
   const id = idKey ? String(obj[idKey]).trim() : String(obj.id || '');
-  if (!id) return null;
+  if (!id || !/^\d+$/.test(id)) return null;
 
   const total = totalKey ? parseFloat(obj[totalKey]) : (parseFloat(obj.total) || 0);
   const grade = gradeKey && obj[gradeKey] ? String(obj[gradeKey]).trim() : calculateGrade(total);
 
   return {
     id: id,
+    no: obj.no || '',
     name: nameKey ? String(obj[nameKey]).trim() : (obj.name || 'นิสิต'),
-    sec: secKey ? String(obj[secKey]).trim() : (obj.sec || 'Sec 1'),
+    sec: obj.sec || 'Sec 1',
     faculty: obj.faculty || "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
     major: obj.major || "การตลาดดิจิทัล (Digital Marketing)",
-    attendance: parseFloat(obj.attendance) || 10,
-    maxAttendance: 10,
-    assignment: parseFloat(obj.assignment) || 20,
-    maxAssignment: 20,
-    quiz: parseFloat(obj.quiz) || 15,
-    maxQuiz: 15,
-    midterm: parseFloat(obj.midterm) || 25,
-    maxMidterm: 25,
-    final: parseFloat(obj.final) || 30,
-    maxFinal: 30,
+    collectedScore: parseFloat(obj['คะแนนเก็บ 50%'] || obj.collectedScore || obj.assignment) || 0,
+    maxCollected: 50,
+    midterm: parseFloat(obj['คะแนนสอบกลางภาค 20%'] || obj.midterm) || 0,
+    maxMidterm: 20,
+    final: parseFloat(obj['คะแนนสอบปลายภาค 25%'] || obj.final) || 0,
+    maxFinal: 25,
+    formScore: parseFloat(obj['คะแนนแบบฟอร์ม 5%'] || obj.formScore || obj.quiz) || 0,
+    maxForm: 5,
     total: total,
     grade: grade,
     remarks: remarkKey && obj[remarkKey] ? String(obj[remarkKey]) : (obj.remarks || "สถานะปกติ"),
-    status: getGradeStatus(grade)
+    status: getGradeStatus(grade),
+    assignment: parseFloat(obj['คะแนนเก็บ 50%'] || obj.collectedScore || obj.assignment) || 0,
+    maxAssignment: 50,
+    quiz: parseFloat(obj['คะแนนแบบฟอร์ม 5%'] || obj.formScore || obj.quiz) || 0,
+    maxQuiz: 5,
+    attendance: 5,
+    maxAttendance: 5,
   };
 }
 
@@ -183,31 +198,7 @@ function processStudentObject(obj) {
 export async function fetchGradeData(config = DEFAULT_SHEET_CONFIG) {
   const { sheetId, gid, appsScriptUrl, useMockFallback } = config;
 
-  // 1. Try Google Apps Script Web App if provided
-  if (appsScriptUrl && appsScriptUrl.trim()) {
-    try {
-      const response = await fetch(appsScriptUrl.trim(), { method: 'GET' });
-      if (response.ok) {
-        const json = await response.json();
-        if (Array.isArray(json) && json.length > 0) {
-          const students = transformRowsToStudents(json);
-          if (students.length > 0) {
-            return {
-              success: true,
-              data: students,
-              source: 'apps_script',
-              message: `โหลดข้อมูลจาก Google Apps Script สำเร็จ (${students.length} รายการ)`,
-              timestamp: new Date()
-            };
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('Apps Script fetch failed:', err);
-    }
-  }
-
-  // 2. Try Direct Google Sheet CSV Export
+  // 1. Try Direct Google Sheet CSV Export
   if (sheetId) {
     const urls = [
       `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid || '0'}`,
@@ -244,8 +235,32 @@ export async function fetchGradeData(config = DEFAULT_SHEET_CONFIG) {
     }
   }
 
-  // 3. Fallback to Demo / Mock Data if enabled or required
-  if (useMockFallback !== false) {
+  // 2. Try Google Apps Script Web App if provided
+  if (appsScriptUrl && appsScriptUrl.trim()) {
+    try {
+      const response = await fetch(appsScriptUrl.trim(), { method: 'GET' });
+      if (response.ok) {
+        const json = await response.json();
+        if (Array.isArray(json) && json.length > 0) {
+          const students = transformRowsToStudents(json);
+          if (students.length > 0) {
+            return {
+              success: true,
+              data: students,
+              source: 'apps_script',
+              message: `โหลดข้อมูลจาก Google Apps Script สำเร็จ (${students.length} รายการ)`,
+              timestamp: new Date()
+            };
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Apps Script fetch failed:', err);
+    }
+  }
+
+  // 3. Fallback to Demo / Mock Data only if explicitly enabled
+  if (useMockFallback) {
     return {
       success: true,
       data: MOCK_STUDENTS,
@@ -260,7 +275,7 @@ export async function fetchGradeData(config = DEFAULT_SHEET_CONFIG) {
     success: false,
     data: [],
     source: 'error',
-    message: 'ไม่สามารถดึงข้อมูลได้ โปรดตรวจสอบการแชร์ Google Sheet หรือใช้ข้อมูลจำลอง',
+    message: 'ไม่สามารถดึงข้อมูลได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือลิงก์ Google Sheet',
     timestamp: new Date()
   };
 }
