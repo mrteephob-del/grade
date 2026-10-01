@@ -22,15 +22,24 @@ export default function InstructorView({ students = [], onSelectStudent }) {
   // Calculate Class Statistics
   const stats = useMemo(() => {
     if (!students || students.length === 0) {
-      return { total: 0, avg: 0, max: 0, min: 0, passRate: 0, distribution: {} };
+      return { total: 0, avg: 0, max: 0, min: 0, maxStudent: null, minStudent: null, passRate: 0, distribution: {} };
     }
 
-    const scores = students.map(s => s.total).filter(t => !isNaN(t));
+    const validStudents = students.filter(s => !isNaN(s.total));
+    const scores = validStudents.map(s => s.total);
     const total = students.length;
     const sum = scores.reduce((a, b) => a + b, 0);
-    const avg = total > 0 ? (sum / total).toFixed(1) : 0;
-    const max = scores.length > 0 ? Math.max(...scores).toFixed(1) : 0;
-    const min = scores.length > 0 ? Math.min(...scores).toFixed(1) : 0;
+    const avg = total > 0 ? (sum / total).toFixed(2) : 0;
+
+    let maxStudent = null;
+    let minStudent = null;
+    if (validStudents.length > 0) {
+      maxStudent = validStudents.reduce((prev, curr) => (curr.total > prev.total ? curr : prev), validStudents[0]);
+      minStudent = validStudents.reduce((prev, curr) => (curr.total < prev.total ? curr : prev), validStudents[0]);
+    }
+
+    const max = maxStudent ? maxStudent.total : 0;
+    const min = minStudent ? minStudent.total : 0;
 
     const passing = students.filter(s => s.grade !== 'F').length;
     const passRate = total > 0 ? ((passing / total) * 100).toFixed(0) : 0;
@@ -45,7 +54,7 @@ export default function InstructorView({ students = [], onSelectStudent }) {
       }
     });
 
-    return { total, avg, max, min, passRate, distribution: dist };
+    return { total, avg, max, min, maxStudent, minStudent, passRate, distribution: dist };
   }, [students]);
 
   // Unique sections
@@ -160,11 +169,16 @@ export default function InstructorView({ students = [], onSelectStudent }) {
             <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
               <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-xs sm:text-sm font-medium">คะแนนสูงสุด</span>
+            <span className="text-xs sm:text-sm font-medium">คะแนนรวมสูงสุด</span>
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-display">
-            {stats.max}
+            {stats.max} <span className="text-xs font-normal text-slate-400">/ 100</span>
           </div>
+          {stats.maxStudent && (
+            <div className="text-xs text-slate-500 font-medium truncate mt-1" title={`${stats.maxStudent.name} (${stats.maxStudent.id})`}>
+              {stats.maxStudent.name}
+            </div>
+          )}
         </div>
 
         {/* Lowest Score */}
@@ -173,11 +187,16 @@ export default function InstructorView({ students = [], onSelectStudent }) {
             <div className="p-2 rounded-xl bg-rose-50 text-rose-600">
               <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-xs sm:text-sm font-medium">คะแนนต่ำสุด</span>
+            <span className="text-xs sm:text-sm font-medium">คะแนนรวมต่ำสุด</span>
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-rose-600 font-display">
-            {stats.min}
+            {stats.min} <span className="text-xs font-normal text-slate-400">/ 100</span>
           </div>
+          {stats.minStudent && (
+            <div className="text-xs text-slate-500 font-medium truncate mt-1" title={`${stats.minStudent.name} (${stats.minStudent.id})`}>
+              {stats.minStudent.name}
+            </div>
+          )}
         </div>
 
         {/* Passing Rate */}
