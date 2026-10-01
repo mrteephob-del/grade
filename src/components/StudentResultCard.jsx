@@ -352,25 +352,6 @@ export default function StudentResultCard({ student, onResetSearch }) {
             })}
           </div>
 
-          {/* Teacher Feedback / Remarks */}
-          <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-orange-50/70 to-amber-50/70 border border-orange-200/80">
-            <div className="flex items-start space-x-3">
-              <div className="p-2 rounded-xl bg-orange-100 text-nu-orange flex-shrink-0 mt-0.5">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <div className="text-left">
-                <h5 className="text-xs sm:text-sm font-bold text-slate-900">
-                  ข้อเสนอแนะและหมายเหตุจากอาจารย์ผู้สอน
-                </h5>
-                <p className="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed">
-                  "{student.remarks}"
-                </p>
-                <div className="mt-2 text-[11px] text-slate-500">
-                  {COURSE_INFO.instructor} • อัปเดตล่าสุดตามบันทึกการสอน
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Official Disclaimer Note */}
           <div className="mt-6 text-center text-xs text-slate-400 font-light border-t border-slate-100 pt-4">
