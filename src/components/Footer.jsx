@@ -25,13 +25,6 @@ export default function Footer({ onOpenGuide }) {
 
         {/* Right: Quick Links */}
         <div className="flex items-center space-x-4">
-          <button 
-            onClick={onOpenGuide}
-            className="hover:text-nu-orange transition-colors"
-          >
-            วิธีเชื่อมต่อ Google Sheet
-          </button>
-          <span>•</span>
           <a 
             href="https://www.nu.ac.th" 
             target="_blank" 

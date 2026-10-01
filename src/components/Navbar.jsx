@@ -2,8 +2,6 @@ import React from 'react';
 import { 
   GraduationCap, 
   RefreshCw, 
-  Settings, 
-  HelpCircle, 
   ShieldCheck, 
   Database,
   BarChart3
@@ -91,26 +89,6 @@ export default function Navbar({
               <span className="sm:hidden">
                 {instructorMode ? 'ค้นหา' : 'ภาพรวม'}
               </span>
-            </button>
-
-            {/* Settings Button */}
-            <button
-              id="open-settings-btn"
-              onClick={onOpenSettings}
-              title="ตั้งค่า Google Sheet"
-              className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors"
-            >
-              <Settings className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-            </button>
-
-            {/* Help / Guide Button */}
-            <button
-              id="open-guide-btn"
-              onClick={onOpenGuide}
-              title="คู่มือการเชื่อมต่อ Google Sheet"
-              className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors"
-            >
-              <HelpCircle className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
 
           </div>
