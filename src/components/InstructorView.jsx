@@ -121,16 +121,6 @@ export default function InstructorView({ students = [], onSelectStudent }) {
               {COURSE_INFO.faculty} มหาวิทยาลัยนเรศวร • {COURSE_INFO.semester}
             </p>
           </div>
-
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={handleExportCSV}
-              className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-md transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              <span>ส่งออก CSV (Excel)</span>
-            </button>
-          </div>
         </div>
       </div>
 
