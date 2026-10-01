@@ -102,8 +102,7 @@ export function transformRowsToStudents(rows) {
     if (!rawId || rawId === 'undefined' || rawId.toLowerCase() === 'id' || !/^\d+$/.test(rawId)) continue;
 
     const no = noIdx !== -1 ? String(row[noIdx] || '').trim() : '';
-    const rawName = nameIdx !== -1 ? String(row[nameIdx] || '').trim() : '';
-    const name = rawName || `นิสิต (${rawId})`;
+    const name = nameIdx !== -1 ? String(row[nameIdx] || '').trim() : 'นิสิต';
     const sec = secIdx !== -1 ? String(row[secIdx] || '').trim() : (no ? `เลขที่ ${no}` : 'Sec 1');
 
     const collectedScore = collectedIdx !== -1 ? parseFloat(row[collectedIdx]) || 0 : 0;
@@ -173,7 +172,7 @@ function processStudentObject(obj) {
   return {
     id: id,
     no: obj.no || '',
-    name: (nameKey && String(obj[nameKey]).trim()) ? String(obj[nameKey]).trim() : (obj.name && obj.name !== 'นิสิต' ? obj.name : `นิสิต (${id})`),
+    name: nameKey ? String(obj[nameKey]).trim() : (obj.name || 'นิสิต'),
     sec: obj.sec || 'Sec 1',
     faculty: obj.faculty || "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
     major: obj.major || "การตลาดดิจิทัล (Digital Marketing)",

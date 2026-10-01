@@ -86,10 +86,10 @@ export default function Navbar({
             >
               <BarChart3 className="w-4 h-4" />
               <span className="hidden sm:inline">
-                {instructorMode ? 'กลับสู่หน้านิสิต' : 'มุมมองอาจารย์'}
+                {instructorMode ? 'กลับสู่หน้าค้นหา' : 'ภาพรวม'}
               </span>
               <span className="sm:hidden">
-                {instructorMode ? 'นิสิต' : 'อาจารย์'}
+                {instructorMode ? 'ค้นหา' : 'ภาพรวม'}
               </span>
             </button>
 

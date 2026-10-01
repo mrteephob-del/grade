@@ -112,7 +112,7 @@ export default function InstructorView({ students = [], onSelectStudent }) {
           <div>
             <div className="inline-flex items-center space-x-2 text-xs font-semibold px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30 mb-2">
               <BarChart2 className="w-3.5 h-3.5" />
-              <span>ภาพรวมสำหรับอาจารย์และผู้สอน (Instructor Dashboard)</span>
+              <span>ภาพรวมผลการเรียน (Grade Overview Dashboard)</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display tracking-tight">
               สถิติผลการเรียนวิชา {COURSE_INFO.courseNameTh}
