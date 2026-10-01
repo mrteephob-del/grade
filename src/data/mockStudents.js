@@ -1,258 +1,50 @@
-// Mock data representing Digital Marketing course students at Naresuan University
-export const MOCK_STUDENTS = [
-  {
-    id: "65051001",
-    name: "นายภานุพงศ์ วงศ์สวรรค์",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 10,
-    maxAttendance: 10,
-    assignment: 20,
-    maxAssignment: 20,
-    quiz: 14.5,
-    maxQuiz: 15,
-    midterm: 23.5,
-    maxMidterm: 25,
-    final: 28.0,
-    maxFinal: 30,
-    total: 96.0,
-    grade: "A",
-    remarks: "ผลงานยอดเยี่ยม มีส่วนร่วมในชั้นเรียนสม่ำเสมอ ส่งงานครบถ้วน",
-    status: "ผ่านเกณฑ์ดีเยี่ยม"
-  },
-  {
-    id: "65051014",
-    name: "นางสาวศิริพร บุญประเสริฐ",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 10,
-    maxAttendance: 10,
-    assignment: 18.5,
-    maxAssignment: 20,
-    quiz: 13.0,
-    maxQuiz: 15,
-    midterm: 21.0,
-    maxMidterm: 25,
-    final: 25.5,
-    maxFinal: 30,
-    total: 88.0,
-    grade: "A",
-    remarks: "แคมเปญ Social Media Ads ในโปรเจกต์กลุ่มทำได้น่าสนใจมาก",
-    status: "ผ่านเกณฑ์ดีเยี่ยม"
-  },
-  {
-    id: "65051028",
-    name: "นายธนกฤต เมธากุล",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 9,
-    maxAttendance: 10,
-    assignment: 17.0,
-    maxAssignment: 20,
-    quiz: 12.0,
-    maxQuiz: 15,
-    midterm: 19.5,
-    maxMidterm: 25,
-    final: 24.0,
-    maxFinal: 30,
-    total: 81.5,
-    grade: "A",
-    remarks: "เข้าใจการวิเคราะห์ Google Analytics และ Conversion Funnel ได้ดี",
-    status: "ผ่านเกณฑ์ดีเยี่ยม"
-  },
-  {
-    id: "65051035",
-    name: "นางสาวกานต์พิชชา รัตนเวศน์",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การสื่อสารมวลชน (Mass Communication)",
-    sec: "Sec 1",
-    attendance: 10,
-    maxAttendance: 10,
-    assignment: 17.5,
-    maxAssignment: 20,
-    quiz: 11.5,
-    maxQuiz: 15,
-    midterm: 18.0,
-    maxMidterm: 25,
-    final: 21.5,
-    maxFinal: 30,
-    total: 78.5,
-    grade: "B+",
-    remarks: "Content Marketing โดดเด่น มีความคิดสร้างสรรค์สูง",
-    status: "ผ่านเกณฑ์ดีมาก"
-  },
-  {
-    id: "65051049",
-    name: "นายชินวัตร รักษ์ถิ่น",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 8,
-    maxAttendance: 10,
-    assignment: 16.0,
-    maxAssignment: 20,
-    quiz: 12.5,
-    maxQuiz: 15,
-    midterm: 17.5,
-    maxMidterm: 25,
-    final: 22.0,
-    maxFinal: 30,
-    total: 76.0,
-    grade: "B+",
-    remarks: "วิเคราะห์ SEO Keyword Strategy ได้ตรงกลุ่มเป้าหมาย",
-    status: "ผ่านเกณฑ์ดีมาก"
-  },
-  {
-    id: "65051052",
-    name: "นางสาวณัฐณิชา เจริญสุข",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 2",
-    attendance: 10,
-    maxAttendance: 10,
-    assignment: 16.5,
-    maxAssignment: 20,
-    quiz: 10.5,
-    maxQuiz: 15,
-    midterm: 16.0,
-    maxMidterm: 25,
-    final: 20.0,
-    maxFinal: 30,
-    total: 73.0,
-    grade: "B",
-    remarks: "รายงานครบถ้วนตามแบบฟอร์ม ควรทบทวนการคำนวณ ROAS",
-    status: "ผ่านเกณฑ์ดี"
-  },
-  {
-    id: "65051066",
-    name: "นายปัณณวิชญ์ สิทธิศักดิ์",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "คอมพิวเตอร์ธุรกิจ (Business Computer)",
-    sec: "Sec 2",
-    attendance: 9,
-    maxAttendance: 10,
-    assignment: 15.0,
-    maxAssignment: 20,
-    quiz: 11.0,
-    maxQuiz: 15,
-    midterm: 16.5,
-    maxMidterm: 25,
-    final: 19.5,
-    maxFinal: 30,
-    total: 71.0,
-    grade: "B",
-    remarks: "การสร้าง Landing page สวยงามและ Responsive ดีมาก",
-    status: "ผ่านเกณฑ์ดี"
-  },
-  {
-    id: "66052011",
-    name: "นางสาววรัญญา พิทักษ์ไทย",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 2",
-    attendance: 9,
-    maxAttendance: 10,
-    assignment: 15.5,
-    maxAssignment: 20,
-    quiz: 9.5,
-    maxQuiz: 15,
-    midterm: 15.0,
-    maxMidterm: 25,
-    final: 18.0,
-    maxFinal: 30,
-    total: 67.0,
-    grade: "C+",
-    remarks: "ส่งงานตรงเวลาทุกชิ้น คะแนนสอบกลางภาคปานกลาง",
-    status: "ผ่านเกณฑ์ปานกลาง"
-  },
-  {
-    id: "66052023",
-    name: "นายพีรพล พลสงคราม",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 2",
-    attendance: 8,
-    maxAttendance: 10,
-    assignment: 14.0,
-    maxAssignment: 20,
-    quiz: 9.0,
-    maxQuiz: 15,
-    midterm: 14.5,
-    maxMidterm: 25,
-    final: 17.5,
-    maxFinal: 30,
-    total: 63.0,
-    grade: "C",
-    remarks: "ควรเพิ่มเติมเรื่องการวางแผนงบประมาณโฆษณาออนไลน์",
-    status: "ผ่านเกณฑ์พอใช้"
-  },
-  {
-    id: "66052045",
-    name: "นางสาวอลิสา สุวรรณรัตน์",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 2",
-    attendance: 7,
-    maxAttendance: 10,
-    assignment: 13.0,
-    maxAssignment: 20,
-    quiz: 8.5,
-    maxQuiz: 15,
-    midterm: 13.0,
-    maxMidterm: 25,
-    final: 16.0,
-    maxFinal: 30,
-    total: 57.5,
-    grade: "D+",
-    remarks: "ขาดการมีส่วนร่วมในควิซบางครั้ง แนะนำศึกษาเพิ่มเติมเรื่อง A/B Testing",
-    status: "ผ่านเกณฑ์ระดับต่ำ"
-  },
-  {
-    id: "66052058",
-    name: "นายกิตติคุณ ดำรงเกียรติ",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 8,
-    maxAttendance: 10,
-    assignment: 12.0,
-    maxAssignment: 20,
-    quiz: 8.0,
-    maxQuiz: 15,
-    midterm: 12.5,
-    maxMidterm: 25,
-    final: 18.5,
-    maxFinal: 30,
-    total: 59.0,
-    grade: "D+",
-    remarks: "ช่วงปลายภาคมีความตั้งใจพัฒนาขึ้นอย่างเห็นได้ชัด",
-    status: "ผ่านเกณฑ์ระดับต่ำ"
-  },
-  {
-    id: "66052077",
-    name: "นางสาวชญาภา เลิศวรัญญู",
-    faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
-    major: "การตลาดดิจิทัล (Digital Marketing)",
-    sec: "Sec 1",
-    attendance: 6,
-    maxAttendance: 10,
-    assignment: 11.5,
-    maxAssignment: 20,
-    quiz: 7.0,
-    maxQuiz: 15,
-    midterm: 11.0,
-    maxMidterm: 25,
-    final: 15.0,
-    maxFinal: 30,
-    total: 50.5,
-    grade: "D",
-    remarks: "คาบเส้นเกณฑ์ผ่าน โปรดติดต่ออาจารย์เพื่อรับคำแนะนำการเรียนเพิ่มเติม",
-    status: "ผ่านเกณฑ์ขั้นต่ำ"
+import { REAL_STUDENTS_RAW } from './realStudentList';
+
+export function getGradeStatus(grade) {
+  switch (grade) {
+    case 'A': return 'ผ่านเกณฑ์ดีเยี่ยม (Excellent)';
+    case 'B+': return 'ผ่านเกณฑ์ดีมาก (Very Good)';
+    case 'B': return 'ผ่านเกณฑ์ดี (Good)';
+    case 'C+': return 'ผ่านเกณฑ์ค่อนข้างดี (Fairly Good)';
+    case 'C': return 'ผ่านเกณฑ์ปานกลาง (Fair)';
+    case 'D+': return 'ผ่านเกณฑ์ระดับต่ำ (Poor)';
+    case 'D': return 'ผ่านเกณฑ์ขั้นต่ำ (Very Poor)';
+    case 'F': return 'ไม่ผ่านเกณฑ์ (Fail)';
+    default: return 'อยู่ระหว่างประมวลผล';
   }
-];
+}
+
+export function getDefaultRemarks(grade, total) {
+  if (grade === 'A') return 'ผลการเรียนยอดเยี่ยม คะแนนรวมอยู่ในระดับเกียรตินิยม';
+  if (grade === 'B+' || grade === 'B') return 'ผลการเรียนอยู่ในเกณฑ์ดี มีความตั้งใจและส่งงานครบถ้วน';
+  if (grade === 'C+' || grade === 'C') return 'ผ่านเกณฑ์ตามมาตรฐานรายวิชา ผลงานคะแนนเก็บอยู่ในเกณฑ์น่าพึงพอใจ';
+  if (grade === 'D+' || grade === 'D') return 'ผ่านเกณฑ์ขั้นต่ำ แนะนำให้ทบทวนเนื้อหาเพิ่มเติมเพื่อพัฒนาต่อยอด';
+  return 'ไม่ผ่านเกณฑ์รายวิชา โปรดติดต่ออาจารย์ผู้สอนเพื่อรับคำแนะนำ';
+}
+
+export const MOCK_STUDENTS = REAL_STUDENTS_RAW.map(item => {
+  const [no, id, name, classwork, midterm, final, form, total, grade] = item;
+  return {
+    no,
+    id: String(id).trim(),
+    name: String(name).trim(),
+    faculty: "มหาวิทยาลัยนเรศวร",
+    major: "การตลาดดิจิทัล (Digital Marketing)",
+    sec: "Sec 1",
+    classwork: parseFloat(classwork),
+    maxClasswork: 50,
+    midterm: parseFloat(midterm),
+    maxMidterm: 20,
+    final: parseFloat(final),
+    maxFinal: 25,
+    form: parseFloat(form),
+    maxForm: 5,
+    total: parseFloat(total),
+    grade: String(grade).trim(),
+    remarks: getDefaultRemarks(grade, total),
+    status: getGradeStatus(grade)
+  };
+});
 
 export const COURSE_INFO = {
   courseCode: "206331",
@@ -261,7 +53,7 @@ export const COURSE_INFO = {
   semester: "ภาคเรียนที่ 1 ปีการศึกษา 2568",
   faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
   university: "มหาวิทยาลัยนเรศวร (Naresuan University)",
-  instructor: "ผู้สอน: ทีมคณาจารย์ประจำภาควิชาการบริหารธุรกิจ",
+  instructor: "ผู้สอน: ทีมคณาจารย์ประจำวิชาการตลาดดิจิทัล",
   maxScore: 100,
   scoreCriteria: [
     { grade: "A", min: 80, max: 100, color: "text-emerald-600 bg-emerald-50 border-emerald-200" },

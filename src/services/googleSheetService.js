@@ -73,16 +73,16 @@ export function transformRowsToStudents(rows) {
   let gradeIdx = headers.findIndex(h => /เกรด|grade/i.test(h));
   let remarkIdx = headers.findIndex(h => /หมายเหตุ|remark|note|สถานะ|status/i.test(h));
 
-  // Sub-scores
-  let midtermIdx = headers.findIndex(h => /mid|กลางภาค/i.test(h));
-  let finalIdx = headers.findIndex(h => /fin|ปลายภาค/i.test(h));
-  let quizIdx = headers.findIndex(h => /quiz|ควิซ|ย่อย/i.test(h));
-  let assignIdx = headers.findIndex(h => /assign|งาน|การบ้าน|โปรเจกต์|project/i.test(h));
-  let attendIdx = headers.findIndex(h => /attend|เช็คชื่อ|มีส่วนร่วม|participat|เวลาเรียน/i.test(h));
+  // Sub-scores according to course syllabus (50% เก็บ / 20% กลางภาค / 25% ปลายภาค / 5% แบบฟอร์ม)
+  let classworkIdx = headers.findIndex(h => /คะแนนเก็บ|เก็บ|classwork|assign|งาน/i.test(h));
+  let midtermIdx = headers.findIndex(h => /กลางภาค|mid/i.test(h));
+  let finalIdx = headers.findIndex(h => /ปลายภาค|fin/i.test(h));
+  let formIdx = headers.findIndex(h => /แบบฟอร์ม|ฟอร์ม|form|attend|เช็คชื่อ/i.test(h));
 
   const students = [];
 
-  for (const row of dataRows) {
+  for (let i = 0; i < dataRows.length; i++) {
+    const row = dataRows[i];
     if (!row || row.length === 0) continue;
 
     // Check if row has an ID
@@ -98,15 +98,14 @@ export function transformRowsToStudents(rows) {
     const name = nameIdx !== -1 ? String(row[nameIdx] || '').trim() : 'นิสิต';
     const sec = secIdx !== -1 ? String(row[secIdx] || '').trim() : 'Sec 1';
 
+    const classwork = classworkIdx !== -1 ? parseFloat(row[classworkIdx]) || 0 : 0;
     const midterm = midtermIdx !== -1 ? parseFloat(row[midtermIdx]) || 0 : 0;
     const final = finalIdx !== -1 ? parseFloat(row[finalIdx]) || 0 : 0;
-    const quiz = quizIdx !== -1 ? parseFloat(row[quizIdx]) || 0 : 0;
-    const assignment = assignIdx !== -1 ? parseFloat(row[assignIdx]) || 0 : 0;
-    const attendance = attendIdx !== -1 ? parseFloat(row[attendIdx]) || 0 : 0;
+    const form = formIdx !== -1 ? parseFloat(row[formIdx]) || 0 : 0;
 
     let total = totalIdx !== -1 ? parseFloat(row[totalIdx]) : NaN;
     if (isNaN(total)) {
-      total = Math.round((midterm + final + quiz + assignment + attendance) * 100) / 100;
+      total = Math.round((classwork + midterm + final + form) * 100) / 100;
     }
 
     let grade = gradeIdx !== -1 ? String(row[gradeIdx] || '').trim() : '';
@@ -114,24 +113,23 @@ export function transformRowsToStudents(rows) {
       grade = calculateGrade(total);
     }
 
-    const remarks = remarkIdx !== -1 ? String(row[remarkIdx] || '').trim() : 'ส่งงานครบถ้วน';
+    const remarks = remarkIdx !== -1 ? String(row[remarkIdx] || '').trim() : '';
 
     students.push({
+      no: i + 1,
       id: rawId,
       name: name,
       sec: sec,
-      faculty: "คณะบริหารธุรกิจ เศรษฐศาสตร์และการสื่อสาร",
+      faculty: "มหาวิทยาลัยนเรศวร",
       major: "การตลาดดิจิทัล (Digital Marketing)",
-      attendance: attendance,
-      maxAttendance: 10,
-      assignment: assignment,
-      maxAssignment: 20,
-      quiz: quiz,
-      maxQuiz: 15,
+      classwork: classwork,
+      maxClasswork: 50,
       midterm: midterm,
-      maxMidterm: 25,
+      maxMidterm: 20,
       final: final,
-      maxFinal: 30,
+      maxFinal: 25,
+      form: form,
+      maxForm: 5,
       total: total,
       grade: grade,
       remarks: remarks || "สถานะการประเมินปกติ",

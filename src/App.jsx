@@ -144,8 +144,14 @@ export default function App() {
     window.scrollTo({ top: 380, behavior: 'smooth' });
   };
 
-  // Quick sample IDs for chips
-  const quickSamples = students.slice(0, 4);
+  // Quick sample IDs for chips representing different grade ranges
+  const quickSamples = [
+    students.find(s => s.grade === 'B+'),
+    students.find(s => s.grade === 'B'),
+    students.find(s => s.grade === 'C+'),
+    students.find(s => s.grade === 'C'),
+    students.find(s => s.grade === 'D+'),
+  ].filter(Boolean);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 relative selection:bg-orange-500 selection:text-white">

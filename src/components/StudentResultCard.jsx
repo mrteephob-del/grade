@@ -105,49 +105,40 @@ export default function StudentResultCard({ student, onResetSearch }) {
 
   const scoreItems = [
     {
-      title: 'คะแนนสอบกลางภาค (Midterm)',
-      score: student.midterm,
-      max: student.maxMidterm || 25,
-      icon: BookOpen,
-      color: 'from-amber-500 to-orange-500',
-      bgColor: 'bg-amber-500',
-      badge: 'ทฤษฎี & กรณีศึกษา'
-    },
-    {
-      title: 'คะแนนสอบปลายภาค (Final)',
-      score: student.final,
-      max: student.maxFinal || 30,
-      icon: TrendingUp,
-      color: 'from-orange-500 to-rose-500',
-      bgColor: 'bg-orange-600',
-      badge: 'การวางแผนแคมเปญ'
-    },
-    {
-      title: 'งานมอบหมาย & โปรเจกต์ (Assignment)',
-      score: student.assignment,
-      max: student.maxAssignment || 20,
+      title: 'คะแนนเก็บสะสม (50%)',
+      score: student.classwork !== undefined ? student.classwork : (student.assignment || 0),
+      max: student.maxClasswork || 50,
       icon: ClipboardCheck,
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'bg-blue-600',
-      badge: 'งานเดี่ยว & โครงงานกลุ่ม'
+      badge: 'งานมอบหมาย & กิจกรรมสะสม'
     },
     {
-      title: 'แบบทดสอบย่อย (Quiz)',
-      score: student.quiz,
-      max: student.maxQuiz || 15,
+      title: 'คะแนนสอบกลางภาค (20%)',
+      score: student.midterm !== undefined ? student.midterm : 0,
+      max: student.maxMidterm || 20,
+      icon: BookOpen,
+      color: 'from-amber-500 to-orange-500',
+      bgColor: 'bg-amber-500',
+      badge: 'การสอบกลางภาค'
+    },
+    {
+      title: 'คะแนนสอบปลายภาค (25%)',
+      score: student.final !== undefined ? student.final : 0,
+      max: student.maxFinal || 25,
+      icon: TrendingUp,
+      color: 'from-orange-500 to-rose-500',
+      bgColor: 'bg-orange-600',
+      badge: 'การสอบปลายภาค'
+    },
+    {
+      title: 'คะแนนแบบฟอร์ม (5%)',
+      score: student.form !== undefined ? student.form : (student.attendance || 0),
+      max: student.maxForm || 5,
       icon: Sparkles,
-      color: 'from-purple-500 to-violet-600',
-      bgColor: 'bg-purple-600',
-      badge: 'ทดสอบหลังเรียน'
-    },
-    {
-      title: 'การเข้าเรียน & มีส่วนร่วม (Participation)',
-      score: student.attendance,
-      max: student.maxAttendance || 10,
-      icon: Users,
       color: 'from-emerald-500 to-teal-600',
       bgColor: 'bg-emerald-600',
-      badge: 'การเช็คชื่อในชั้นเรียน'
+      badge: 'การส่งแบบประเมิน/แบบฟอร์ม'
     }
   ];
 

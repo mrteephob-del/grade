@@ -69,16 +69,15 @@ export default function InstructorView({ students = [], onSelectStudent }) {
   // Export full table to CSV
   const handleExportCSV = () => {
     if (!students.length) return;
-    const headers = ["รหัสนิสิต", "ชื่อ-นามสกุล", "เซกชัน", "เข้าเรียน(10)", "งาน(20)", "ควิซ(15)", "กลางภาค(25)", "ปลายภาค(30)", "รวม(100)", "เกรด", "หมายเหตุ"];
-    const rows = students.map(s => [
+    const headers = ["เลขที่", "รหัสนิสิต", "ชื่อ-นามสกุล", "คะแนนเก็บ(50%)", "กลางภาค(20%)", "ปลายภาค(25%)", "แบบฟอร์ม(5%)", "รวม(100%)", "เกรด", "หมายเหตุ"];
+    const rows = students.map((s, idx) => [
+      s.no || idx + 1,
       `"${s.id}"`,
       `"${s.name}"`,
-      `"${s.sec}"`,
-      s.attendance,
-      s.assignment,
-      s.quiz,
-      s.midterm,
-      s.final,
+      s.classwork !== undefined ? s.classwork : (s.assignment || 0),
+      s.midterm !== undefined ? s.midterm : 0,
+      s.final !== undefined ? s.final : 0,
+      s.form !== undefined ? s.form : (s.attendance || 0),
       s.total,
       `"${s.grade}"`,
       `"${s.remarks || ''}"`
@@ -299,15 +298,14 @@ export default function InstructorView({ students = [], onSelectStudent }) {
           <table className="w-full text-left text-xs sm:text-sm">
             <thead className="bg-slate-100/70 text-slate-600 font-semibold border-b border-slate-200">
               <tr>
+                <th className="py-3.5 px-3 text-center w-12">เลขที่</th>
                 <th className="py-3.5 px-4">รหัสนิสิต</th>
                 <th className="py-3.5 px-4">ชื่อ-นามสกุล</th>
-                <th className="py-3.5 px-4 text-center">เซก</th>
-                <th className="py-3.5 px-3 text-right">เข้าเรียน (10)</th>
-                <th className="py-3.5 px-3 text-right">งาน (20)</th>
-                <th className="py-3.5 px-3 text-right">ควิซ (15)</th>
-                <th className="py-3.5 px-3 text-right">กลางภาค (25)</th>
-                <th className="py-3.5 px-3 text-right">ปลายภาค (30)</th>
-                <th className="py-3.5 px-4 text-right font-bold text-slate-900">รวม (100)</th>
+                <th className="py-3.5 px-3 text-right">คะแนนเก็บ (50%)</th>
+                <th className="py-3.5 px-3 text-right">กลางภาค (20%)</th>
+                <th className="py-3.5 px-3 text-right">ปลายภาค (25%)</th>
+                <th className="py-3.5 px-3 text-right">แบบฟอร์ม (5%)</th>
+                <th className="py-3.5 px-4 text-right font-bold text-slate-900">รวม (100%)</th>
                 <th className="py-3.5 px-4 text-center">เกรด</th>
                 <th className="py-3.5 px-4 text-center">จัดการ</th>
               </tr>
@@ -315,27 +313,34 @@ export default function InstructorView({ students = [], onSelectStudent }) {
             <tbody className="divide-y divide-slate-100">
               {filteredStudents.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="py-8 text-center text-slate-400">
+                  <td colSpan={10} className="py-8 text-center text-slate-400">
                     ไม่พบข้อมูลนิสิตที่ตรงกับเงื่อนไขการค้นหา
                   </td>
                 </tr>
               ) : (
-                filteredStudents.map((s) => (
+                filteredStudents.map((s, idx) => (
                   <tr key={s.id} className="hover:bg-orange-50/40 transition-colors">
+                    <td className="py-3.5 px-3 text-center font-mono text-slate-400 text-xs">
+                      {s.no || idx + 1}
+                    </td>
                     <td className="py-3.5 px-4 font-mono font-semibold text-slate-800">
                       {s.id}
                     </td>
                     <td className="py-3.5 px-4 font-medium text-slate-900">
                       {s.name}
                     </td>
-                    <td className="py-3.5 px-4 text-center text-slate-600">
-                      {s.sec}
+                    <td className="py-3.5 px-3 text-right text-slate-600 font-mono">
+                      {s.classwork !== undefined ? s.classwork : s.assignment}
                     </td>
-                    <td className="py-3.5 px-3 text-right text-slate-600">{s.attendance}</td>
-                    <td className="py-3.5 px-3 text-right text-slate-600">{s.assignment}</td>
-                    <td className="py-3.5 px-3 text-right text-slate-600">{s.quiz}</td>
-                    <td className="py-3.5 px-3 text-right text-slate-600">{s.midterm}</td>
-                    <td className="py-3.5 px-3 text-right text-slate-600">{s.final}</td>
+                    <td className="py-3.5 px-3 text-right text-slate-600 font-mono">
+                      {s.midterm}
+                    </td>
+                    <td className="py-3.5 px-3 text-right text-slate-600 font-mono">
+                      {s.final}
+                    </td>
+                    <td className="py-3.5 px-3 text-right text-slate-600 font-mono">
+                      {s.form !== undefined ? s.form : s.attendance}
+                    </td>
                     <td className="py-3.5 px-4 text-right font-bold text-nu-orange font-display">
                       {s.total}
                     </td>
