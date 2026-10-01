@@ -66,7 +66,10 @@ export function transformRowsToStudents(rows) {
 
   // Map header indices
   let idIdx = headers.findIndex(h => /รหัส|student.*id|^id$|code/i.test(h));
-  let nameIdx = headers.findIndex(h => /ชื่อ|name|fullname|นิสิต/i.test(h));
+  let nameIdx = headers.findIndex(h => (h.includes('ชื่อ') || /name|fullname/i.test(h)) && !h.includes('รหัส'));
+  if (nameIdx === -1) {
+    nameIdx = headers.findIndex((h, idx) => idx !== idIdx && /นิสิต|student/i.test(h) && !h.includes('รหัส'));
+  }
   let noIdx = headers.findIndex(h => /เลขที่|ลำดับ|no|order/i.test(h));
   let secIdx = headers.findIndex(h => /sec|ตอน|กลุ่ม|group/i.test(h));
   let totalIdx = headers.findIndex(h => /รวม|total|sum|คะแนนรวม|100%/i.test(h));
@@ -155,7 +158,7 @@ function processStudentObject(obj) {
   if (!obj) return null;
   const keys = Object.keys(obj);
   const idKey = keys.find(k => /รหัส|student.*id|^id$|code/i.test(k));
-  const nameKey = keys.find(k => /ชื่อ|name|fullname/i.test(k));
+  const nameKey = keys.find(k => (k.includes('ชื่อ') || /name|fullname/i.test(k)) && !k.includes('รหัส'));
   const totalKey = keys.find(k => /รวม|total|sum/i.test(k));
   const gradeKey = keys.find(k => /เกรด|grade/i.test(k));
   const remarkKey = keys.find(k => /หมายเหตุ|remark|note/i.test(k));

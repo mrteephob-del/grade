@@ -13,7 +13,7 @@ import {
 import { COURSE_INFO } from './data/mockStudents';
 import { CheckCircle2, AlertTriangle, Info } from 'lucide-react';
 
-const STORAGE_KEY = 'nu_grade_sheet_config_v3';
+const STORAGE_KEY = 'nu_grade_sheet_config_v4';
 
 export default function App() {
   const [config, setConfig] = useState(() => {
