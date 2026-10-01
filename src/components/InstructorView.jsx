@@ -44,8 +44,8 @@ export default function InstructorView({ students = [], onSelectStudent }) {
     const passing = students.filter(s => s.grade !== 'F').length;
     const passRate = total > 0 ? ((passing / total) * 100).toFixed(0) : 0;
 
-    // Distribution
-    const dist = { 'A': 0, 'B+': 0, 'B': 0, 'C+': 0, 'C': 0, 'D+': 0, 'D': 0, 'F': 0 };
+    // Distribution (F on the left, A on the right)
+    const dist = { 'F': 0, 'D': 0, 'D+': 0, 'C': 0, 'C+': 0, 'B': 0, 'B+': 0, 'A': 0 };
     students.forEach(s => {
       if (dist[s.grade] !== undefined) {
         dist[s.grade]++;

@@ -264,13 +264,13 @@ export const COURSE_INFO = {
   instructor: "ผู้สอน: ทีมคณาจารย์ประจำภาควิชาการบริหารธุรกิจ",
   maxScore: 100,
   scoreCriteria: [
-    { grade: "A", min: 80, max: 100, color: "text-emerald-600 bg-emerald-50 border-emerald-200" },
-    { grade: "B+", min: 75, max: 79.99, color: "text-teal-600 bg-teal-50 border-teal-200" },
-    { grade: "B", min: 70, max: 74.99, color: "text-blue-600 bg-blue-50 border-blue-200" },
-    { grade: "C+", min: 65, max: 69.99, color: "text-cyan-600 bg-cyan-50 border-cyan-200" },
-    { grade: "C", min: 60, max: 64.99, color: "text-amber-600 bg-amber-50 border-amber-200" },
-    { grade: "D+", min: 55, max: 59.99, color: "text-orange-600 bg-orange-50 border-orange-200" },
-    { grade: "D", min: 50, max: 54.99, color: "text-rose-600 bg-rose-50 border-rose-200" },
     { grade: "F", min: 0, max: 49.99, color: "text-red-700 bg-red-50 border-red-200" },
+    { grade: "D", min: 50, max: 54.99, color: "text-rose-600 bg-rose-50 border-rose-200" },
+    { grade: "D+", min: 55, max: 59.99, color: "text-orange-600 bg-orange-50 border-orange-200" },
+    { grade: "C", min: 60, max: 64.99, color: "text-amber-600 bg-amber-50 border-amber-200" },
+    { grade: "C+", min: 65, max: 69.99, color: "text-cyan-600 bg-cyan-50 border-cyan-200" },
+    { grade: "B", min: 70, max: 74.99, color: "text-blue-600 bg-blue-50 border-blue-200" },
+    { grade: "B+", min: 75, max: 79.99, color: "text-teal-600 bg-teal-50 border-teal-200" },
+    { grade: "A", min: 80, max: 100, color: "text-emerald-600 bg-emerald-50 border-emerald-200" },
   ]
 };
